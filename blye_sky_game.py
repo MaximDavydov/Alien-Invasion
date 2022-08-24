@@ -3,46 +3,43 @@ import sys
 import pygame
 
 from settings import Settings
-from ship import Ship
+from angry_alien import Alien
 
 
-class AlienInvasion:
-    """Class for control resourses and behavior of game."""
+class BlueSkyGame:
+    """Overall class for manage game assets and behavior."""
 
     def __init__(self):
-        """Initialize game and create game resourses."""
+        """Initialize the game and create a game resources."""
         pygame.init()
         self.settings = Settings()
-
         self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
-        pygame.display.set_caption("Alien Invasion")
+        pygame.display.set_caption('Blue Sky Game')
 
-        self.ship = Ship(self)
-
-        # # Appointment color of background
-        # self.bg_color = (230, 230, 230)
+        self.alien = Alien(self)
 
     def run_game(self):
-        """Launch main cycle of game."""
+        """Start the main loop for the game."""
         while True:
             self._check_events()
             self._update_screen()
 
     def _check_events(self):
-        """Handles key presses and mouse events."""
+        """Watch for keyboard and mouse events"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
     def _update_screen(self):
-        """Update image on screen and display new screen."""
+        """Redraw screen during each pass though the loop."""
         self.screen.fill(self.settings.bg_color)
-        self.ship.blitme()
+        self.alien.blitme()
 
+        """Make the most recently draws screen visible"""
         pygame.display.flip()
 
 
 if __name__ == '__main__':
-    # Create instance and launch the game.
-    ai = AlienInvasion()
-    ai.run_game()
+    # Make a game instance, and run the game.
+    bsg = BlueSkyGame()
+    bsg.run_game()
