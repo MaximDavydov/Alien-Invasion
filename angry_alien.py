@@ -41,6 +41,13 @@ class Alien:
         # обновляем значение прямоугольника
         self.rect.x, self.rect.y = self.x, self.y
 
+    def center_alien(self):
+        #Center the alien on the left side of the screen
+        self.rect.midleft = self.screen_rect.midleft
+
+        #Store a decimal value for the ship's vertial position
+        self.y = float(self.rect.y)
+
     def blitme(self):
         """Draw alien in current position."""
         self.screen.blit(self.image, self.rect)
