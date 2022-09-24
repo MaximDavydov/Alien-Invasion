@@ -16,4 +16,4 @@ class Scoreboard():
         # Prepare the initial score images.
         self.prep_score()
 
-
+    def prep_score(self)
