@@ -30,7 +30,7 @@ class Settings():
 
         #  alien_frequency controls how often a new alien appear.s
         #    Higher values -> more frequent aliens. Max = 1.0.
-        # self.alien_frequency = 0.008
+        self.alien_frequency = 0.008
 
         # How quickly the game speeds up
         self.speedup_scale = 1.3
