@@ -18,7 +18,7 @@ class Settings():
         #horizontal
         # self.bullet_width = 20
         # self.bullet_hight = 8
-        self.bullet_width = 1000
+        self.bullet_width = 10000
         self.bullet_hight = 30
         # self.bullet_color = (60, 60, 60)
         self.bullet_color = (159, 252, 249)
