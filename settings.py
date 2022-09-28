@@ -1,3 +1,6 @@
+import os
+
+
 class Settings():
     """Class for storage all settings game Alien Invasion."""
 
@@ -18,11 +21,11 @@ class Settings():
         #horizontal
         # self.bullet_width = 20
         # self.bullet_hight = 8
-        self.bullet_width = 10000
+        self.bullet_width = 10
         self.bullet_hight = 30
         # self.bullet_color = (60, 60, 60)
         self.bullet_color = (159, 252, 249)
-        self.bullets_allowed = 1000
+        self.bullets_allowed = 10
 
         #Aliens settings
         # self.alien_speed = 3.0
@@ -36,6 +39,12 @@ class Settings():
         self.speedup_scale = 1.3
         # How quickly the alien point values increase
         self.score_scale = 1.5
+
+        # Paths to sound and music files.
+        self.background_music = os.path.join('music', 'background_music.mp3')
+        self.bullet_sound = os.path.join('music', 'bullet_sound.wav')
+        self.collision_sound = os.path.join('music', 'collision_sound.mp3')
+        self.crash_sound = os.path.join('music', 'crash_sound.mp3')
 
         self.difficulty_level = 'medium'
 

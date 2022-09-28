@@ -45,6 +45,12 @@ class AlienInvasion:
         #Make the Play button.
         self._make_difficulty_buttons()
 
+        # Load game sounds.
+        pygame.mixer.music.load(self.settings.background_music)
+        self.bullet_sound = pygame.mixer.Sound(self.settings.bullet_sound)
+        self.collision_sound = pygame.mixer.Sound(self.settings.collision_sound)
+        self.crash_sound = pygame.mixer.Sound(self.settings.crash_sound)
+
     def _make_difficulty_buttons(self):
         self.easy_button = Button(self, 'Easy')
         self.medium_button = Button(self, 'Medium')
@@ -118,7 +124,16 @@ class AlienInvasion:
         self.stats.reset_stats()
         self.stats.game_active = True
         self.sb.prep_image()
+        self._reset_game()
 
+        # Hide the mouse cursor.
+        pygame.mouse.set_visible(False)
+
+        # Play background music.
+        pygame.mixer.music.play(-1)
+
+    def _reset_game(self):
+        """Reset stats, fleet, bullets, and ship's position."""
         # Get rid of any remaining aliens and bullets.
         self.aliens.empty()
         self.bullets.empty()
@@ -126,9 +141,6 @@ class AlienInvasion:
         # Create a new fleet and center the ship.
         self._create_fleet()
         self.ship.center_ship()
-
-        # Hide the mouse cursor.
-        pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
         """Respond to keypresses and mouse events."""
@@ -158,6 +170,7 @@ class AlienInvasion:
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
+            self.bullet_sound.play()
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
@@ -175,9 +188,10 @@ class AlienInvasion:
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
         # Remove any bullets and aliens that have collided.
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, False, True)
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
         if collisions:
+            self.collision_sound.play()
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
@@ -197,6 +211,9 @@ class AlienInvasion:
         self.stats.level += 1
         self.sb.prep_level()
 
+        # Rewind music.
+        pygame.mixer.music.rewind()
+
     def _check_alien_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
         screen_rect = self.screen.get_rect()
@@ -208,6 +225,7 @@ class AlienInvasion:
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
+        self.crash_sound.play()
         if self.stats.ship_left > 0:
             # Decrement ships_left, and update scoreboard.
             self.stats.ship_left -= 1
@@ -225,6 +243,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mixer.music.stop()
             pygame.mouse.set_visible(True)
 
     def _update_aliens(self):
@@ -306,6 +325,11 @@ class AlienInvasion:
         if self.stats.high_score > saved_high_score:
             with open('high_score.json', 'w') as f:
                 json.dump(self.stats.high_score, f)
+
+        # Stop playing.
+        pygame.mixer.music.stop()
+        pygame.mixer.music.unload()
+        pygame.mixer.quit()
 
         sys.exit()
 
