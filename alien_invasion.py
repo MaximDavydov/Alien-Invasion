@@ -105,13 +105,13 @@ class AlienInvasion:
         medium_button_clicked = self.medium_button.rect.collidepoint(mouse_pos)
         hard_button_clicked = self.hard_button.rect.collidepoint(mouse_pos)
 
-        if easy_button_clicked:
+        if easy_button_clicked and not self.stats.game_active:
             self.settings.difficulty_level = 'easy'
             self._start_game()
-        elif medium_button_clicked:
+        elif medium_button_clicked and not self.stats.game_active:
             self.settings.difficulty_level = 'medium'
             self._start_game()
-        elif hard_button_clicked:
+        elif hard_button_clicked and not self.stats.game_active:
             self.settings.difficulty_level = 'hard'
             self._start_game()
 
